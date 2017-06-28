@@ -34,9 +34,9 @@ app.use(session({
 
 app.get("/",function(req,res){
   if(req.session.username){
-    res.render("index");
+    res.render("index",{name:req.session.username, logincount:counter});
   }else{
-  res.render("login");
+  res.redirect("/login");
   }
 });
 
@@ -44,46 +44,63 @@ app.get("/login",function(req,res){
   res.render("login");
 });
 
-let users = [{username: "", password: ""}];
-console.log(users);
+let users = [
+  {username: "adrbin", password: "ab0381"}
+];
 
 app.post("/login",function(req,res){
-  let validUser;
-  messages = [];
-  let i=1;
+  let validUser,
+      messages = [];
 
-
-  users.username[i] += req.body.username;
-  users.password[i] += req.body.password;
-
-
-console.log(users);
 users.forEach(function(user){
-  if (users.username === req.body.username) {
+  if (user.username === req.body.username) {
     validUser = user;
   }
 });
 
+if(validUser === undefined){
+  validUser = {};
+}
+
 req.checkBody("username", "Please Enter a valid username.").notEmpty().isLength({min: 6, max: 20});
 req.checkBody("password", "Please Enter a Password.").notEmpty();
-req.checkBody("username", "Invalid password and username combination.").equals(users.username);
-req.checkBody("password", "Invalid password and username combination.").equals(users.password);
-                                                                // [ { username: '', password: '' } ]
-let errors = req.validationErrors();
+req.checkBody("username", "Invalid password and username combination.").equals(validUser.username);
+req.checkBody("password", "Invalid password and username combination.").equals(validUser.password);
 
+let errors = req.validationErrors();
 if (errors) {
   errors.forEach(function(error) {
     messages.push(error.msg);
   });
+
   res.render("login", {errors: messages});
 } else {
-
   req.session.username = req.body.username;
+  res.redirect("/");
+  }
+});
+let counter = 1;
+app.post('/count',function(req,res){
+  counter++;
+  res.redirect("/");
+});
 
-  res.redirect("/index");
-}
+app.post('/logout',function(req,res){
+  counter = 1;
+  res.redirect('/');
+});
 
-res.redirect("/index");
+app.get('/signup',function(req,res){
+  res.render('signup');
+});
+
+app.post('/signup',function(req,res){
+  let newUser = {};
+  newUser.username = req.body.username;
+  newUser.password = req.body.password;
+  users.push(newUser);
+
+  res.redirect("/");
 });
 
 app.listen(3050,function(req,res){

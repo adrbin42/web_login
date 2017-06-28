@@ -3,10 +3,17 @@
   <head>
     <meta charset="utf-8">
     <title>Site Login</title>
+    <link rel="stylesheet" href="/css/main.css">
   </head>
   <body>
-    <h3>Login for {{username}} successful!</h3>
-    <h3>You have logged in :{{logincount}} times</h3>
-    <a href="/logout">Log out</a>
+
+    <h3>Login for {{name}} successful!</h3>
+    <h3>You have logged in {{logincount}} times</h3>
+    <form action="/count" method="post">
+      <input type="submit" value="Login Count" id="logincount">
+    </form>
+    <form action="/logout" method="post">
+      <input type="submit" value="Log Out" id="logout">
+    </form>
   </body>
 </html>

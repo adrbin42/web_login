@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Login</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="/css/main.css">
   </head>
   <body>
     <div class="container">
@@ -15,11 +15,13 @@
         </div>
         <input type="text" name="username" value="" placeholder="Username"><br>
         <input type="password" name="password" value="" placeholder="Password"><br>
-        <button type="submit">Submit</button>
+        <input type="submit" value='Login' id='loginBtn'>
       </form>
     </div>
     <div>
-      <a href="/signup">Click to signup for our website</a>
+      <form action="/signup" method="get">
+        <input type="submit" value="Click for signup" id="signup">
+      </form>
     </div>
   </body>
 </html>
